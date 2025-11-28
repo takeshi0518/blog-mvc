@@ -1,0 +1,28 @@
+{
+  "name": "blog-mvc",
+  "version": "1.0.0",
+  "description": "Express + PostgreSQL + MVC パターンで実装したシンプルなブログアプリケーション",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takeshi0518/blog-mvc.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/takeshi0518/blog-mvc/issues"
+  },
+  "homepage": "https://github.com/takeshi0518/blog-mvc#readme",
+  "dependencies": {
+    "body-parser": "^2.2.1",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "method-override": "^3.0.0",
+    "pg": "^8.16.3"
+  }
+}
