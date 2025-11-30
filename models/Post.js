@@ -1,9 +1,9 @@
 const pool = require('../config/database');
 
 class Post {
-  // ============
+  // =====================
   // READ
-  // ============
+  // =====================
 
   //全件取得
   static async findAll() {
@@ -27,9 +27,9 @@ class Post {
     }
   }
 
-  // ============
+  // =====================
   // CREATE
-  // ============
+  // =====================
 
   static async create(title, content) {
     try {
@@ -43,9 +43,9 @@ class Post {
     }
   }
 
-  // ============
+  // =====================
   // UPDATE
-  // ============
+  // =====================
 
   static async update(id, title, content) {
     try {
@@ -59,9 +59,9 @@ class Post {
     }
   }
 
-  // ============
+  // =====================
   // DELETE
-  // ============
+  // =====================
 
   static async delete(id) {
     try {
