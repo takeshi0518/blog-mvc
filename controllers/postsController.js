@@ -53,3 +53,28 @@ exports.new = (req, res) => {
     errors: [], //エラーメッセージ用
   });
 };
+
+// =====================
+//  編集フォーム表示
+// =====================
+
+exports.edit = async (req, res) => {
+  try {
+    const id = req.prams.id;
+
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).send('記事が見つかりません');
+    }
+
+    res.render('posts/edit', {
+      title: '記事編集',
+      post: post,
+      errors: [],
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('サーバーエラーが発生しました');
+  }
+};
