@@ -19,4 +19,28 @@ exports.index = async (req, res) => {
   }
 };
 
+// ==================
+// 詳細表示
+// ==================
+
+exposrts.show = async (req, res) => {
+  try {
+    const id = req.prams.id;
+
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).send('記事が見つかりません');
+    }
+
+    res.render('posts/show', {
+      title: post.title,
+      post: post,
+    });
+  } catch (err) {
+    console.err(err);
+    res.status(500).send('サーバーエラーが発生しました');
+  }
+};
+
 
