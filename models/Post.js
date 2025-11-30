@@ -20,7 +20,9 @@ class Post {
   //IDで1件取得
   static async findById(id) {
     try {
-      const result = await pool.query('SELECT * FROM posts WHRE id = $1', [id]);
+      const result = await pool.query('SELECT * FROM posts WHERE id = $1', [
+        id,
+      ]);
       return result.rows[0];
     } catch (err) {
       throw err;
