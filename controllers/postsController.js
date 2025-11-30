@@ -116,3 +116,19 @@ exports.update = async (req, res) => {
     res.status(500).send('サーバーエラーが発生しました');
   }
 };
+
+// =====================
+//  削除処理
+// =====================
+
+exports.delete = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await Post.delete(id);
+
+    res.redirect('/posts');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('サーバーエラーが発生しました');
+  }
+};
