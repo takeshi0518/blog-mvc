@@ -1,8 +1,8 @@
 const Post = require('../models/Post');
 
-// ==================
+// =====================
 // 一覧表示
-// ==================
+// =====================
 
 exports.index = async (req, res) => {
   try {
@@ -19,11 +19,11 @@ exports.index = async (req, res) => {
   }
 };
 
-// ==================
+// =====================
 // 詳細表示
-// ==================
+// =====================
 
-exposrts.show = async (req, res) => {
+exports.show = async (req, res) => {
   try {
     const id = req.prams.id;
 
@@ -43,4 +43,13 @@ exposrts.show = async (req, res) => {
   }
 };
 
-
+// =====================
+// 新規作成フォーム表示
+// =====================
+exports.new = (req, res) => {
+  res.render('posts/new', {
+    title: '新規記事作成',
+    post: { title: '', content: '' }, //空のpostオブジェクト
+    errors: [], //エラーメッセージ用
+  });
+};
