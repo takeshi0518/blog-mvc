@@ -78,3 +78,41 @@ exports.edit = async (req, res) => {
     res.status(500).send('サーバーエラーが発生しました');
   }
 };
+
+// =====================
+//  更新処理
+// =====================
+
+exports.update = async (req, res) => {
+  try {
+    const { title, content } = req.body;
+    const id = req.params.id;
+
+    //バリデーション
+    const errors = [];
+    if (!title || title.trim() === '') {
+      errors.push('タイトルを入力してください');
+    }
+    if (!content || content.trim() === '') {
+      errors.push('本文を入力してください');
+    }
+
+    //エラーがある場合、編集フォームに戻る
+    if (errors.lenght > 0) {
+      return res.render('posts/edit', {
+        title: '記事編集',
+        post: { id, title, content },
+        errors,
+      });
+    }
+
+    //Modelで記事を更新
+    await Post.update(id, title, content);
+
+    //詳細ページにリダイレクト
+    res.render(`/posts/${id}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('サーバーエラーが発生しました');
+  }
+};
