@@ -55,6 +55,42 @@ exports.new = (req, res) => {
 };
 
 // =====================
+//  新規作成フォーム
+// =====================
+
+exports.create = async (req, res) => {
+  try {
+    const { title, content } = req.body;
+
+    //バリデーション
+    if (!title || !title.trim() === '') {
+      errors.push('タイトルを入力してください');
+    }
+    if (!content || !content.trim() === '') {
+      errors.push('本文を入力してください');
+    }
+
+    //エラーがある場合、フォームに戻る
+    if (errors.lenght > 0) {
+      return res.render('posts/new', {
+        title: '新規記事作成',
+        post: { title, content },
+        errors,
+      });
+    }
+
+    //Modelで記事を作成
+    await Post.create(title, content);
+
+    //一覧ページにリダイレクト
+    res.redirect('/posts');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('サーバーエラーが発生しました');
+  }
+};
+
+// =====================
 //  編集フォーム表示
 // =====================
 
