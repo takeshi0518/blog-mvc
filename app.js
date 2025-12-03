@@ -30,3 +30,46 @@ app.use(express.static(path.join(__dirname, 'public')));
 // =====================
 //  レイアウト対応
 // =====================
+
+app.use((req, res, next) => {
+  const render = res.render;
+  res.render = function (view, options) {
+    options = options || {};
+    options.body = '';
+
+    render.call(this, view, options, (err, html) => {
+      if (err) return next(err);
+
+      options.body = html;
+      render.call(res, 'layout', options);
+    });
+  };
+  next();
+});
+
+// =====================
+//  ルーティング
+// =====================
+
+const postsRoutes = require('./routes/posts');
+app.use('/posts', postsRoutes);
+
+//トップページ
+app.get('/', (req, res) => {
+  res.redirect('/posts');
+});
+
+// =====================
+//  404エラー
+// =====================
+app.use((req, res) => {
+  res.status(404).send('ページが見つかりません');
+});
+
+// =====================
+//  サーバー起動
+// =====================
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
