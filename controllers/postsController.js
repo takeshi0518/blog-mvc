@@ -157,7 +157,7 @@ exports.update = async (req, res) => {
 //  削除処理
 // =====================
 
-exports.delete = async (req, res) => {
+exports.destroy = async (req, res) => {
   try {
     const id = req.params.id;
     await Post.delete(id);

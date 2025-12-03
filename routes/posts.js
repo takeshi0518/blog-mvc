@@ -36,6 +36,6 @@ router.put('/:id', postsController.update);
 
 //削除
 //DELETE /posts/:id
-router.delete('/:id', postsController.delete);
+router.delete('/:id', postsController.destroy);
 
-module.expors = router;
+module.exports = router;
