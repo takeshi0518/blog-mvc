@@ -1,0 +1,42 @@
+<h1><%= title %></h1>
+
+<div class="actions">
+  <a href="/posts/new" class="btn btn-primary">新規作成</a>
+</div>
+
+<% if (posts.lenght === 0) %>
+<p class="empty-message">記事がありません</p>
+<% } else { %>
+<div class="posts">
+  <% posts.forEach((post) => { %>
+  <article class="poost-card">
+    <h2><a href="/posts/<%= post.id %>"><%= post.title %></a></h2>
+    <p class="post-excerpt">
+      <%= post.content.length > 100 ? post.content.substring(0, 100) + '...' :
+      post.content %>
+    </p>
+    <div class="post-meta">
+      <span class="post-date"
+        ><%= newDate(post.created_at).toLocaleDateString('ja-JP') %></span
+      >
+    </div>
+    <div class="post-actions">
+      <a href="/posts/<%= post.id %>" class="btn btn-sm">詳細</a>
+      <a href="/posts/<%= post.id %>/edit" class="btn btn-sm btn-secondary"
+        >編集</a
+      >
+      <form
+        action="/posts/<%= post.id %>?_method=DELETE"
+        method="POST"
+        class="delete-form"
+        style="display: inline"
+      >
+        <button type="submit" class="btn btn-sm btn-danger delete-btn">
+          削除
+        </button>
+      </form>
+    </div>
+  </article>
+  <% }); %>
+</div>
+<% } %>
