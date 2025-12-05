@@ -1,31 +1,30 @@
+// controllers/postsController.js
 const Post = require('../models/Post');
 
 // =====================
 // 一覧表示
 // =====================
-
 exports.index = async (req, res) => {
   try {
     const posts = await Post.findAll();
 
-    //Viewに渡す
+    // Viewに渡す
     res.render('posts/index', {
       title: '記事一覧',
       posts: posts,
     });
   } catch (err) {
-    console.err(err);
-    res.send(500).send('サーバーエラーが発生しました');
+    console.error(err);
+    res.status(500).send('サーバーエラーが発生しました'); // 修正
   }
 };
 
 // =====================
 // 詳細表示
 // =====================
-
 exports.show = async (req, res) => {
   try {
-    const id = req.prams.id;
+    const id = req.params.id; // 修正：prams → params
 
     const post = await Post.findById(id);
 
@@ -38,7 +37,7 @@ exports.show = async (req, res) => {
       post: post,
     });
   } catch (err) {
-    console.err(err);
+    console.error(err); // 修正：err → error
     res.status(500).send('サーバーエラーが発生しました');
   }
 };
@@ -49,29 +48,32 @@ exports.show = async (req, res) => {
 exports.new = (req, res) => {
   res.render('posts/new', {
     title: '新規記事作成',
-    post: { title: '', content: '' }, //空のpostオブジェクト
-    errors: [], //エラーメッセージ用
+    post: { title: '', content: '' },
+    errors: [],
   });
 };
 
 // =====================
-//  新規作成フォーム
+// 新規作成処理
 // =====================
-
 exports.create = async (req, res) => {
   try {
     const { title, content } = req.body;
 
-    //バリデーション
-    if (!title || !title.trim() === '') {
+    // バリデーション
+    const errors = []; // 追加
+    if (!title || title.trim() === '') {
+      // 修正：!title.trim()
       errors.push('タイトルを入力してください');
     }
-    if (!content || !content.trim() === '') {
+    if (!content || content.trim() === '') {
+      // 修正：!content.trim()
       errors.push('本文を入力してください');
     }
 
-    //エラーがある場合、フォームに戻る
-    if (errors.lenght > 0) {
+    // エラーがある場合、フォームに戻る
+    if (errors.length > 0) {
+      // 修正：lenght → length
       return res.render('posts/new', {
         title: '新規記事作成',
         post: { title, content },
@@ -79,10 +81,10 @@ exports.create = async (req, res) => {
       });
     }
 
-    //Modelで記事を作成
+    // Modelで記事を作成
     await Post.create(title, content);
 
-    //一覧ページにリダイレクト
+    // 一覧ページにリダイレクト
     res.redirect('/posts');
   } catch (err) {
     console.error(err);
@@ -91,12 +93,11 @@ exports.create = async (req, res) => {
 };
 
 // =====================
-//  編集フォーム表示
+// 編集フォーム表示
 // =====================
-
 exports.edit = async (req, res) => {
   try {
-    const id = req.prams.id;
+    const id = req.params.id; // 修正：prams → params
 
     const post = await Post.findById(id);
 
@@ -116,15 +117,14 @@ exports.edit = async (req, res) => {
 };
 
 // =====================
-//  更新処理
+// 更新処理
 // =====================
-
 exports.update = async (req, res) => {
   try {
     const { title, content } = req.body;
     const id = req.params.id;
 
-    //バリデーション
+    // バリデーション
     const errors = [];
     if (!title || title.trim() === '') {
       errors.push('タイトルを入力してください');
@@ -133,8 +133,9 @@ exports.update = async (req, res) => {
       errors.push('本文を入力してください');
     }
 
-    //エラーがある場合、編集フォームに戻る
-    if (errors.lenght > 0) {
+    // エラーがある場合、編集フォームに戻る
+    if (errors.length > 0) {
+      // 修正：lenght → length
       return res.render('posts/edit', {
         title: '記事編集',
         post: { id, title, content },
@@ -142,11 +143,11 @@ exports.update = async (req, res) => {
       });
     }
 
-    //Modelで記事を更新
+    // Modelで記事を更新
     await Post.update(id, title, content);
 
-    //詳細ページにリダイレクト
-    res.render(`/posts/${id}`);
+    // 詳細ページにリダイレクト
+    res.redirect(`/posts/${id}`); // 修正：render → redirect
   } catch (err) {
     console.error(err);
     res.status(500).send('サーバーエラーが発生しました');
@@ -154,9 +155,8 @@ exports.update = async (req, res) => {
 };
 
 // =====================
-//  削除処理
+// 削除処理
 // =====================
-
 exports.destroy = async (req, res) => {
   try {
     const id = req.params.id;

@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const path = require('path');
+const expressLayouts = require('express-ejs-layouts');
 require('dotenv').config();
 
 const app = express();
@@ -11,7 +12,16 @@ const app = express();
 // =====================
 
 app.set('view engine', 'ejs');
-app.set('view', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views'));
+
+// =====================
+//  レイアウト対応
+// =====================
+
+app.use(expressLayouts);
+app.set('layout', 'layout');
+app.set('layout extractScripts', true);
+app.set('layout extractStyles', true);
 
 // =====================
 //  ミドルウェア
@@ -26,26 +36,6 @@ app.use(methodOverride('_method'));
 
 // 静的ファイル（CSS, JS, 画像など）
 app.use(express.static(path.join(__dirname, 'public')));
-
-// =====================
-//  レイアウト対応
-// =====================
-
-app.use((req, res, next) => {
-  const render = res.render;
-  res.render = function (view, options) {
-    options = options || {};
-    options.body = '';
-
-    render.call(this, view, options, (err, html) => {
-      if (err) return next(err);
-
-      options.body = html;
-      render.call(res, 'layout', options);
-    });
-  };
-  next();
-});
 
 // =====================
 //  ルーティング
