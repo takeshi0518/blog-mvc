@@ -1,0 +1,31 @@
+<article class="post-detail">
+  <h1><%= post.title %></h1>
+
+  <div class="post-meta">
+    <span
+      >投稿日: <%= new Date(post.created_at).toLocaleDateString('ja-JP')
+      %></span
+    >
+    <% if (post.updated_at && post.updated_at !== post.created_at) { %>
+    <span
+      >更新日: <%= new Date(post.updated_at).toLocaleDateString('ja-JP')
+      %></span
+    >
+    <% } %>
+  </div>
+
+  <div class="post-content"><%= post.content %></div>
+
+  <div class="post-actions">
+    <a href="/posts" class="btn btn-secondary">一覧に戻る</a>
+    <a href="/posts<%= post.id %>/edit" class="btn btn-primary">編集</a>
+    <form
+      action="/posts/<%= post.id %>?_method=DELETE"
+      method="POST"
+      class="delete-form"
+      style="display: inline"
+    >
+      <button type="submit" class="btn btn-danger delete-btn">削除</button>
+    </form>
+  </div>
+</article>
